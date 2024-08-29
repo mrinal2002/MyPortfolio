@@ -15,18 +15,26 @@ function revealToSpan(){
     })
 }
 
-revealToSpan();
+function valueSetters(){
+    gsap.set("#nav a",{y:"-100%",opacity:0});
+    gsap.set("#home span .child",{y:"100%"});
+    gsap.set("#home .row img",{opacity:0});
+
+    document.querySelectorAll("#Visual>g").forEach((e)=>{
+        e.childNodes[1].childNodes[1].style.strokeDasharray=e.childNodes[1].childNodes[1].getTotalLength()+ 'px';
+        e.childNodes[1].childNodes[1].style.strokeDashoffset=e.childNodes[1].childNodes[1].getTotalLength()+ 'px';
+    })
+}
 
 function loaderAnimation(){
-
     var tl=gsap.timeline();
-    tl.from(".child span",{
+    tl.from("#loader .child span",{
         x:100,
         duration:1.2,
         stagger:.2,
         ease:Power3.easeInOut
     })
-    .to(".parent .child",{
+    .to("#loader .parent .child",{
         y:"-100%",
         duration:1,
         ease:Circ.easeInOut
@@ -46,16 +54,49 @@ function loaderAnimation(){
     .to("#green",{
         height:"0%",
         duration:1,
-        delete:-.6,
-        ease:Circ.easeInOut
+        delay:-.4,
+        ease:Circ.easeInOut,
+        onComplete:function(){
+            animationHomePage();
+        }
+        
     })
 }
-
-// loaderAnimation();
 
 function svgAnimation(){
-    document.querySelectorAll("#Visual>g").forEach((e)=>{
-        e.childNodes[1].childNodes[1].style.strokeDasharray=e.childNodes[1].childNodes[1].getTotalLength()+ 'px';
-        e.childNodes[1].childNodes[1].style.strokeDashoffset=e.childNodes[1].childNodes[1].getTotalLength()+ 'px';
+    
+    gsap.to("#Visual>g>g>path,#Visual>g>g>polyline",{
+        strokeDashoffset:0,
+        duration:2,
+        ease:Expo.easeInOut
     })
 }
+
+function animationHomePage(){
+   
+    var tl=gsap.timeline();
+    tl.to("#nav a",{
+        y:0,
+        opacity:1,
+        stagger:.05,
+        ease:Expo.easeInOut
+    })
+    .to("#home .parent .child",{
+        y:0,
+        duration:1.5,
+        ease:Expo.easeInOut,
+        stagger:.1
+    })
+    .to("#home .row img",{
+        opacity:1,
+        delay:-.5,
+        ease:Expo.easeInOut,
+        onComplete:function(){
+            svgAnimation();
+        }
+    })
+}
+
+revealToSpan();
+valueSetters();
+loaderAnimation();
