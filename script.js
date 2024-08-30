@@ -97,6 +97,36 @@ function animationHomePage(){
     })
 }
 
+function locoInitilize(){
+    const scroll = new LocomotiveScroll({
+        el: document.querySelector('#main'),
+        smooth: true
+    });
+}
+
+function cardShow(){
+    var showimg="";
+    document.querySelectorAll(".cnt").forEach(function(cnt){
+        cnt.addEventListener("mousemove",function(dets){
+            // console.log(dets.target.dataset.index);
+            // console.log(document.querySelector("#cursor").children[0]);
+            showimg=dets.target;
+            document.querySelector("#cursor").children[dets.target.dataset.index].style.opacity=1;
+            document.querySelector("#cursor").children[dets.target.dataset.index].style.transform=`translate(${dets.clientX}px,${dets.clientY}px)`;
+            showimg.style.filter="grayscale(1)";
+            document.querySelector("#work").style.backgroundColor=dets.target.dataset.color;
+        })
+        cnt.addEventListener("mouseleave",function(dets){
+            document.querySelector("#cursor").children[showimg.dataset.index].style.opacity=0;
+            showimg.style.filter="grayscale(0)";
+            document.querySelector("#work").style.backgroundColor="#fff";
+
+        })
+    })
+}
+
+locoInitilize();
 revealToSpan();
 valueSetters();
 loaderAnimation();
+cardShow();
